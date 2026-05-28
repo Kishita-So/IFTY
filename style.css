@@ -1,0 +1,47 @@
+body {
+  background: #111;
+  color: #fff;
+  text-align: center;
+  font-family: sans-serif;
+}
+
+input, button, select {
+  margin: 5px;
+  padding: 8px;
+  border-radius: 6px;
+  border: none;
+}
+
+button {
+  background: #333;
+  color: white;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #555;
+}
+
+#card {
+  width: 340px;
+  height: 220px;
+  margin: 20px auto;
+  background: #222;
+  border-radius: 10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+#front {
+  font-size: 28px;
+}
+
+#back {
+  display: none;
+  white-space: pre-line;
+  font-size: 14px;
+}
