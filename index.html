@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IFTY AI</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<h1>IFTY AI</h1>
+
+<!-- フォルダ -->
+<div>
+  <input id="folderInput" placeholder="フォルダ名">
+  <button id="createFolderBtn">作成</button>
+  <select id="folderSelect"></select>
+</div>
+
+<!-- 単語生成 -->
+<div>
+  <input id="wordInput" placeholder="単語">
+  <button id="generateBtn">AI生成</button>
+</div>
+
+<p id="status"></p>
+
+<!-- カード -->
+<div id="card">
+  <div id="front"></div>
+  <div id="back"></div>
+</div>
+
+<!-- 音声 -->
+<div>
+  <button id="usBtn">US</button>
+  <button id="ukBtn">UK</button>
+</div>
+
+<!-- Typing -->
+<div>
+  <input id="typingInput" placeholder="typing">
+  <button id="typingBtn">OK</button>
+</div>
+
+<!-- ナビ -->
+<div>
+  <button id="prevBtn">Prev</button>
+  <button id="nextBtn">Next</button>
+</div>
+
+<!-- 削除 -->
+<div>
+  <input id="deleteWordInput" placeholder="削除単語">
+  <button id="deleteWordBtn">削除</button>
+  <button id="deleteCurrentBtn">今の単語削除</button>
+  <button id="clearAllBtn">全削除</button>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
