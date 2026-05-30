@@ -1,63 +1,65 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IFTY AI</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>IFTY AI</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
-
 <body>
 
-<h1>IFTY AI</h1>
+  <div class="app">
 
-<!-- フォルダ -->
-<div>
-  <input id="folderInput" placeholder="フォルダ名">
-  <button id="createFolderBtn">作成</button>
-  <select id="folderSelect"></select>
-</div>
+    <h1>IFTY AI</h1>
 
-<!-- 単語生成 -->
-<div>
-  <input id="wordInput" placeholder="単語">
-  <button id="generateBtn">AI生成</button>
-</div>
+    <!-- Folder -->
+    <div class="section">
+      <input id="folderName" placeholder="New folder name" />
+      <button id="createFolderBtn">Create Folder</button>
+      <select id="folderSelect"></select>
+    </div>
 
-<p id="status"></p>
+    <!-- Word input -->
+    <div class="section">
+      <input id="wordInput" placeholder="Enter word" />
+      <button id="generateBtn">Generate</button>
+    </div>
 
-<!-- カード -->
-<div id="card">
-  <div id="front"></div>
-  <div id="back"></div>
-</div>
+    <!-- Card -->
+    <div id="card" class="card">
+      <div id="front" class="face front">WORD</div>
+      <div id="back" class="face back hidden">
+        <p id="meaning"></p>
+        <p id="example"></p>
+        <p id="ipa"></p>
+        <p id="verb"></p>
+      </div>
+    </div>
 
-<!-- 音声 -->
-<div>
-  <button id="usBtn">US</button>
-  <button id="ukBtn">UK</button>
-</div>
+    <!-- Controls -->
+    <div class="section">
+      <button id="prevBtn">Prev</button>
+      <button id="nextBtn">Next</button>
+      <button id="speakUS">US</button>
+      <button id="speakUK">UK</button>
+    </div>
 
-<!-- Typing -->
-<div>
-  <input id="typingInput" placeholder="typing">
-  <button id="typingBtn">OK</button>
-</div>
+    <!-- Typing -->
+    <div class="section">
+      <input id="typingInput" placeholder="Type word..." />
+      <button id="checkBtn">Check</button>
+    </div>
 
-<!-- ナビ -->
-<div>
-  <button id="prevBtn">Prev</button>
-  <button id="nextBtn">Next</button>
-</div>
+    <!-- Delete -->
+    <div class="section">
+      <input id="deleteInput" placeholder="Delete word" />
+      <button id="deleteBtn">Delete</button>
+      <button id="deleteCurrentBtn">Delete Current</button>
+      <button id="clearBtn">Clear All</button>
+    </div>
 
-<!-- 削除 -->
-<div>
-  <input id="deleteWordInput" placeholder="削除単語">
-  <button id="deleteWordBtn">削除</button>
-  <button id="deleteCurrentBtn">今の単語削除</button>
-  <button id="clearAllBtn">全削除</button>
-</div>
+  </div>
 
-<script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
