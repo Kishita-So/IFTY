@@ -1,247 +1,232 @@
 const state = {
   folders: {},
-  currentFolder: "default",
+  currentFolder: null,
   words: [],
   index: 0,
   flipped: false
 };
 
-/* =========================
-   INIT（即実行）
-========================= */
-
-load();
-
-if(!state.folders["default"]){
-  state.folders["default"] = [];
+/* ---------------- INIT ---------------- */
+function init() {
+  load();
+  bind();
+  renderFolders();
+  render();
 }
 
-state.currentFolder = "default";
-state.words = state.folders["default"];
-
-bind();
-render();
-
-/* =========================
-   DOM
-========================= */
-
-function el(id){
-  return document.getElementById(id);
-}
-
-/* =========================
-   BIND
-========================= */
-
-function bind(){
-
-  el("createFolderBtn").onclick = createFolder;
-  el("generateBtn").onclick = generate;
-
-  el("nextBtn").onclick = next;
-  el("prevBtn").onclick = prev;
-
-  el("typingBtn").onclick = check;
-
-  el("usBtn").onclick = () => speak("en-US");
-  el("ukBtn").onclick = () => speak("en-GB");
-
-  el("deleteCurrentBtn").onclick = deleteCurrent;
-  el("deleteWordBtn").onclick = deleteByWord;
-  el("clearAllBtn").onclick = clearAll;
-
-  el("folderSelect").onchange = changeFolder;
-
-  /* ENTER確実 */
-  window.onkeydown = (e) => {
-    if(e.key === "Enter") check();
+/* ---------------- FAKE AI ---------------- */
+function fakeAI(word) {
+  return {
+    meaning: `${word} の意味（仮生成）`,
+    example: `This is an example sentence using ${word}.`,
+    ipa: ipaTable[word] || "/ˈunknown/",
+    verb: verbTable[word] || "irregular: N/A"
   };
-
-  window.flipCard = flipCard;
 }
 
-/* =========================
-   FOLDER
-========================= */
+/* ---------------- TABLES ---------------- */
+const ipaTable = {};
+const verbTable = {};
 
-function createFolder(){
-  const name = el("folderInput").value;
-  if(!name) return;
+/* ---------------- STORAGE ---------------- */
+function save() {
+  localStorage.setItem("ifty-data", JSON.stringify(state.folders));
+}
+
+function load() {
+  const data = localStorage.getItem("ifty-data");
+  if (data) state.folders = JSON.parse(data);
+}
+
+/* ---------------- BIND ---------------- */
+function bind() {
+  document.getElementById("createFolderBtn").onclick = createFolder;
+  document.getElementById("generateBtn").onclick = generateWord;
+  document.getElementById("folderSelect").onchange = switchFolder;
+
+  document.getElementById("nextBtn").onclick = nextCard;
+  document.getElementById("prevBtn").onclick = prevCard;
+
+  document.getElementById("card").onclick = toggleCard;
+
+  document.getElementById("checkBtn").onclick = checkTyping;
+
+  document.getElementById("deleteBtn").onclick = deleteByWord;
+  document.getElementById("deleteCurrentBtn").onclick = deleteCurrent;
+  document.getElementById("clearBtn").onclick = clearAll;
+
+  document.getElementById("speakUS").onclick = () => speak("US");
+  document.getElementById("speakUK").onclick = () => speak("UK");
+
+  // Enter support
+  document.querySelectorAll("input").forEach(input => {
+    input.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        if (input.id === "wordInput") generateWord();
+        if (input.id === "typingInput") checkTyping();
+        if (input.id === "folderName") createFolder();
+        if (input.id === "deleteInput") deleteByWord();
+      }
+    });
+  });
+}
+
+/* ---------------- FOLDERS ---------------- */
+function createFolder() {
+  const name = document.getElementById("folderName").value.trim();
+  if (!name) return;
 
   state.folders[name] = [];
   state.currentFolder = name;
+  state.words = state.folders[name];
 
-  updateFolders();
   save();
+  renderFolders();
   render();
 }
 
-function updateFolders(){
-  const sel = el("folderSelect");
+function renderFolders() {
+  const sel = document.getElementById("folderSelect");
   sel.innerHTML = "";
 
-  Object.keys(state.folders).forEach(f=>{
-    const o = document.createElement("option");
-    o.value = f;
-    o.textContent = f;
-    sel.appendChild(o);
+  Object.keys(state.folders).forEach(name => {
+    const opt = document.createElement("option");
+    opt.value = name;
+    opt.textContent = name;
+    sel.appendChild(opt);
   });
 
-  sel.value = state.currentFolder;
+  sel.value = state.currentFolder || "";
 }
 
-/* =========================
-   AI（安全版）
-========================= */
+function switchFolder(e) {
+  const name = e.target.value;
+  state.currentFolder = name;
+  state.words = state.folders[name] || [];
+  state.index = 0;
+  state.flipped = false;
+  render();
+}
 
-async function generate(){
-  const word = el("wordInput").value;
-  if(!word) return;
+/* ---------------- WORDS ---------------- */
+async function generateWord() {
+  const word = document.getElementById("wordInput").value.trim();
+  if (!word || !state.currentFolder) return;
 
-  const ai = await fakeAI(word);
+  const data = await fakeAI(word);
 
-  const obj = {
-    word,
-    meaning: ai.meaning,
-    example: ai.example
-  };
+  const entry = { word, ...data };
 
-  state.words.push(obj);
+  state.words.push(entry);
   state.folders[state.currentFolder] = state.words;
 
   save();
+  state.index = state.words.length - 1;
+  state.flipped = false;
   render();
 }
 
-/* テスト用（まず動作確認優先） */
-async function fakeAI(word){
-  return {
-    meaning: word + " の意味",
-    example: "This is an example with " + word
-  };
-}
+/* ---------------- CARD ---------------- */
+function render() {
+  const card = state.words[state.index];
 
-/* =========================
-   RENDER（超重要）
-========================= */
-
-function render(){
-  const w = state.words[state.index];
-
-  if(!w){
-    el("front").innerText = "No word";
-    el("back").innerText = "";
+  if (!card) {
+    document.getElementById("front").textContent = "NO WORD";
+    document.getElementById("meaning").textContent = "";
+    document.getElementById("example").textContent = "";
+    document.getElementById("ipa").textContent = "";
+    document.getElementById("verb").textContent = "";
     return;
   }
 
-  el("front").innerText = w.word;
+  document.getElementById("front").textContent = card.word;
 
-  el("back").innerText =
-`${w.meaning}
+  document.getElementById("meaning").textContent = card.meaning;
+  document.getElementById("example").textContent = card.example;
+  document.getElementById("ipa").textContent = card.ipa;
+  document.getElementById("verb").textContent = card.verb;
 
-${w.example}`;
-
-  el("back").style.display = state.flipped ? "block" : "none";
+  updateFlip();
 }
 
-/* =========================
-   CARD
-========================= */
-
-function flipCard(){
+function toggleCard() {
   state.flipped = !state.flipped;
-  render();
+  updateFlip();
 }
 
-/* =========================
-   NAV
-========================= */
-
-function next(){
-  if(state.index < state.words.length-1) state.index++;
-  render();
+function updateFlip() {
+  document.getElementById("front").classList.toggle("hidden", state.flipped);
+  document.getElementById("back").classList.toggle("hidden", !state.flipped);
 }
 
-function prev(){
-  if(state.index > 0) state.index--;
-  render();
-}
-
-/* =========================
-   TYPING
-========================= */
-
-function check(){
-  const v = el("typingInput").value;
-  const w = state.words[state.index];
-
-  if(!w) return;
-
-  if(v === w.word){
+/* ---------------- NAV ---------------- */
+function nextCard() {
+  if (state.index < state.words.length - 1) {
     state.index++;
-    el("typingInput").value = "";
-  } else {
-    alert("NG");
+    state.flipped = false;
+    render();
   }
-
-  render();
 }
 
-/* =========================
-   AUDIO
-========================= */
-
-function speak(lang){
-  const w = state.words[state.index];
-  if(!w) return;
-
-  const u = new SpeechSynthesisUtterance(w.word);
-  u.lang = lang;
-  speechSynthesis.speak(u);
+function prevCard() {
+  if (state.index > 0) {
+    state.index--;
+    state.flipped = false;
+    render();
+  }
 }
 
-/* =========================
-   DELETE
-========================= */
+/* ---------------- TYPING ---------------- */
+function checkTyping() {
+  const input = document.getElementById("typingInput").value.trim();
+  const current = state.words[state.index];
 
-function deleteCurrent(){
-  state.words.splice(state.index,1);
-  state.index = 0;
+  if (!current) return;
+
+  if (input === current.word) {
+    alert("Correct!");
+    nextCard();
+  } else {
+    alert("Wrong!");
+  }
+}
+
+/* ---------------- DELETE ---------------- */
+function deleteCurrent() {
+  state.words.splice(state.index, 1);
+  if (state.index > 0) state.index--;
+
   save();
   render();
 }
 
-function deleteByWord(){
-  const v = el("deleteWordInput").value.toLowerCase();
+function deleteByWord() {
+  const target = document.getElementById("deleteInput").value.trim();
+  state.words = state.words.filter(w => w.word !== target);
+  state.folders[state.currentFolder] = state.words;
 
-  state.words = state.words.filter(
-    w => w.word.toLowerCase() !== v
-  );
-
-  state.index = 0;
   save();
+  state.index = 0;
   render();
 }
 
-function clearAll(){
-  if(!confirm("全削除？")) return;
-
+function clearAll() {
   state.words = [];
+  state.folders[state.currentFolder] = [];
   state.index = 0;
+
   save();
   render();
 }
 
-/* =========================
-   STORAGE
-========================= */
+/* ---------------- SPEAK ---------------- */
+function speak(type) {
+  const card = state.words[state.index];
+  if (!card) return;
 
-function save(){
-  localStorage.setItem("ifty", JSON.stringify(state.folders));
+  const utter = new SpeechSynthesisUtterance(card.word);
+  utter.lang = "en-US";
+  speechSynthesis.speak(utter);
 }
 
-function load(){
-  const d = localStorage.getItem("ifty");
-  if(d) state.folders = JSON.parse(d);
-}
+init();
