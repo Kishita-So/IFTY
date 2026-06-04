@@ -1,85 +1,65 @@
-body{
-  margin:0;
-  padding:0;
-  background:#0f0f0f;
-  color:white;
-  font-family:Arial,sans-serif;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
-.app{
-  max-width:800px;
-  margin:auto;
-  padding:20px;
+
+body {
+    font-family: sans-serif;
+    background: #f5f7fa;
 }
-h1{
-  text-align:center;
+
+header {
+    background: #2563eb;
+    color: white;
+    text-align: center;
+    padding: 20px;
 }
-.section{
-  margin:15px 0;
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
+
+main {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 20px;
 }
-input,
-select{
-  flex:1;
-  padding:10px;
-  border:none;
-  border-radius:8px;
-  background:#1f1f1f;
-  color:white;
+
+.create-deck,
+.deck-list {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
-button{
-  padding:10px 15px;
-  border:none;
-  border-radius:8px;
-  background:#4caf50;
-  color:white;
-  cursor:pointer;
+
+h2 {
+    margin-bottom: 15px;
 }
-button:hover{
-  background:#43a047;
+
+input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
 }
-.card{
-  margin-top:20px;
-  min-height:260px;
-  background:#1a1a1a;
-  border-radius:12px;
-  padding:20px;
-  cursor:pointer;
+
+button {
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
 }
-.face{
-  display:block;
+
+button:hover {
+    background: #1d4ed8;
 }
-.hidden{
-  display:none;
-}
-#front{
-  font-size:32px;
-  text-align:center;
-  padding-top:80px;
-}
-#back{
-  line-height:1.7;
-}
-#ipa{
-  color:#90caf9;
-  font-size:20px;
-}
-#verbForms{
-  color:#ffcc80;
-}
-#example{
-  color:#bdbdbd;
-  font-style:italic;
-}
-.audioButtons{
-  margin-top:15px;
-  display:flex;
-  gap:10px;
-}
-#typingMeaning{
-  background:#1a1a1a;
-  padding:15px;
-  border-radius:10px;
-  min-height:50px;
+
+.deck-card {
+    background: #eef4ff;
+    border-left: 5px solid #2563eb;
+    padding: 15px;
+    margin-top: 10px;
+    border-radius: 8px;
 }
