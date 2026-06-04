@@ -2,77 +2,79 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>IFTY AI</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
 <div class="app">
-
 <h1>IFTY AI</h1>
-
+<!-- Folder -->
 <div class="section">
-
-<input id="folderName" placeholder="Folder name">
-<button id="createFolderBtn">Create</button>
-<button id="deleteFolderBtn">Delete Folder</button>
-
+<input
+id="folderName"
+placeholder="Folder Name"
+>
+<button id="createFolderBtn">
+Create Folder
+</button>
+<button id="deleteFolderBtn">
+Delete Folder
+</button>
 </div>
-
 <select id="folderSelect"></select>
-
+<!-- Word -->
 <div class="section">
-
-<input id="wordInput" placeholder="Enter word">
-<button id="addWordBtn">Add Word</button>
-
+<input
+id="wordInput"
+placeholder="Enter English Word"
+>
+<button id="addWordBtn">
+Add Word
+</button>
 </div>
-
+<!-- Flash Card -->
 <div id="card" class="card">
-
 <div id="front" class="face">
 NO WORD
 </div>
-
 <div id="back" class="face hidden">
-
 <h2 id="meaning"></h2>
-
 <p id="ipa"></p>
-
 <p id="verbForms"></p>
-
 <p id="example"></p>
-
-<button id="speakBtn">
-Pronunciation
+<div class="audioButtons">
+<button id="speakUS">
+US
 </button>
-
+<button id="speakUK">
+UK
+</button>
 </div>
-
 </div>
-
+</div>
+<!-- Navigation -->
 <div class="section">
-
-<button id="prevBtn">Prev</button>
-<button id="nextBtn">Next</button>
-
+<button id="prevBtn">
+Prev
+</button>
+<button id="nextBtn">
+Next
+</button>
 </div>
-
-<h3>Typing Test</h3>
-
-<p id="typingMeaning"></p>
-
-<input id="typingInput" placeholder="Type English">
-
+<!-- Typing -->
+<h2>Typing Test</h2>
+<p id="typingMeaning">
+No Word
+</p>
+<input
+id="typingInput"
+placeholder="Type English"
+>
 <button id="checkBtn">
 Check
 </button>
-
 </div>
-
-<script src="app.js"></script>
-
+<script src="script.js"></script>
 </body>
 </html>
