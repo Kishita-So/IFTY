@@ -1,50 +1,248 @@
-const createBtn = document.getElementById("createBtn");
-const deckNameInput = document.getElementById("deckName");
-const decksContainer = document.getElementById("decksContainer");
+const foldersContainer =
+document.getElementById("folders");
 
-let decks = JSON.parse(localStorage.getItem("decks")) || [];
+const createFolderBtn =
+document.getElementById("createFolderBtn");
 
-renderDecks();
+const folderNameInput =
+document.getElementById("folderName");
 
-createBtn.addEventListener("click", () => {
-    const name = deckNameInput.value.trim();
+let folders =
+JSON.parse(localStorage.getItem("folders"))
+|| [];
 
-    if (name === "") {
-        alert("単語帳名を入力してください");
-        return;
+renderFolders();
+
+createFolderBtn.addEventListener(
+    "click",
+    createFolder
+);
+
+folderNameInput.addEventListener(
+    "keydown",
+    e=>{
+        if(e.key==="Enter"){
+            createFolder();
+        }
     }
+);
 
-    const deck = {
-        id: Date.now(),
-        name: name,
-        words: []
-    };
+function createFolder(){
 
-    decks.push(deck);
+    const name =
+    folderNameInput.value.trim();
 
-    localStorage.setItem(
-        "decks",
-        JSON.stringify(decks)
+    if(!name) return;
+
+    folders.push({
+        id:Date.now(),
+        name,
+        words:[]
+    });
+
+    save();
+
+    folderNameInput.value="";
+
+    renderFolders();
+}
+
+function deleteFolder(id){
+
+    folders =
+    folders.filter(
+        folder=>folder.id!==id
     );
 
-    deckNameInput.value = "";
+    save();
 
-    renderDecks();
-});
+    renderFolders();
+}
 
-function renderDecks() {
-    decksContainer.innerHTML = "";
+async function addWord(
+    folderId,
+    word
+){
 
-    decks.forEach(deck => {
-        const card = document.createElement("div");
+    if(!word) return;
 
-        card.classList.add("deck-card");
+    try{
 
-        card.innerHTML = `
-            <h3>${deck.name}</h3>
-            <p>単語数: ${deck.words.length}</p>
+        const res =
+        await fetch(
+            `https://api.dictionaryapi.dev/api/v2/entries/en/${word}`
+        );
+
+        const data =
+        await res.json();
+
+        const entry = data[0];
+
+        const phonetic =
+        entry.phonetic || "";
+
+        const audio =
+        entry.phonetics.find(
+            p=>p.audio
+        )?.audio || "";
+
+        const meanings =
+        entry.meanings
+            .map(m=>
+                `[${m.partOfSpeech}] ${
+                    m.definitions[0]?.definition || ""
+                }`
+            )
+            .join("<br>");
+
+        const folder =
+        folders.find(
+            f=>f.id===folderId
+        );
+
+        folder.words.push({
+
+            word,
+
+            phonetic,
+
+            meaning:meanings,
+
+            audio,
+
+            past:"?",
+            pastParticiple:"?",
+            presentParticiple:"?"
+
+        });
+
+        save();
+
+        renderFolders();
+
+    }catch(err){
+
+        alert("単語取得失敗");
+
+    }
+}
+
+function save(){
+
+    localStorage.setItem(
+        "folders",
+        JSON.stringify(folders)
+    );
+}
+
+function renderFolders(){
+
+    foldersContainer.innerHTML="";
+
+    folders.forEach(folder=>{
+
+        const div =
+        document.createElement("div");
+
+        div.className="folder";
+
+        div.innerHTML=`
+
+        <div class="folder-header">
+
+            <h2>📁 ${folder.name}</h2>
+
+            <button
+            onclick="deleteFolder(${folder.id})">
+            🗑️
+            </button>
+
+        </div>
+
+        <input
+        class="wordInput"
+        data-id="${folder.id}"
+        placeholder="単語を入力してEnter">
+
+        <div>
+
+        ${folder.words.map(word=>`
+
+            <div class="word-card">
+
+                <div class="word">
+                ${word.word}
+                </div>
+
+                <div class="phonetic">
+                ${word.phonetic}
+                </div>
+
+                <div>
+                ${word.word}
+                -
+                ${word.past}
+                -
+                ${word.pastParticiple}
+                -
+                ${word.presentParticiple}
+                </div>
+
+                <div>
+                ${word.meaning}
+                </div>
+
+                ${
+                    word.audio
+                    ?
+                    `<div class="audio-buttons">
+
+                        <button
+                        onclick="
+                        new Audio(
+                        '${word.audio}'
+                        ).play()
+                        ">
+                        🔊 発音
+                        </button>
+
+                    </div>`
+                    :
+                    ""
+                }
+
+            </div>
+
+        `).join("")}
+
+        </div>
         `;
 
-        decksContainer.appendChild(card);
+        foldersContainer.appendChild(div);
+    });
+
+    document
+    .querySelectorAll(".wordInput")
+    .forEach(input=>{
+
+        input.addEventListener(
+            "keydown",
+            e=>{
+
+                if(
+                    e.key==="Enter"
+                ){
+
+                    addWord(
+                        Number(
+                            e.target.dataset.id
+                        ),
+                        e.target.value.trim()
+                    );
+
+                    e.target.value="";
+                }
+            }
+        );
     });
 }
