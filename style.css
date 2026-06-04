@@ -1,58 +1,85 @@
-body {
-  font-family: Arial, sans-serif;
-  background: #0f0f0f;
-  color: #ffffff;
-  margin: 0;
-  padding: 0;
+body{
+  margin:0;
+  padding:0;
+  background:#0f0f0f;
+  color:white;
+  font-family:Arial,sans-serif;
 }
-
-.app {
-  max-width: 600px;
-  margin: 50px auto;
-  padding: 20px;
+.app{
+  max-width:800px;
+  margin:auto;
+  padding:20px;
 }
-
-h1 {
-  text-align: center;
-  margin-bottom: 20px;
+h1{
+  text-align:center;
 }
-
-input {
-  width: 70%;
-  padding: 10px;
-  border: none;
-  border-radius: 5px;
-  outline: none;
+.section{
+  margin:15px 0;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
 }
-
-button {
-  padding: 10px 15px;
-  border: none;
-  border-radius: 5px;
-  background: #4caf50;
-  color: white;
-  cursor: pointer;
+input,
+select{
+  flex:1;
+  padding:10px;
+  border:none;
+  border-radius:8px;
+  background:#1f1f1f;
+  color:white;
 }
-
-button:hover {
-  background: #45a049;
+button{
+  padding:10px 15px;
+  border:none;
+  border-radius:8px;
+  background:#4caf50;
+  color:white;
+  cursor:pointer;
 }
-
-#result {
-  margin-top: 20px;
-  padding: 15px;
-  background: #1e1e1e;
-  border-radius: 8px;
+button:hover{
+  background:#43a047;
 }
-
-#result h2 {
-  margin-top: 0;
-  color: #4caf50;
+.card{
+  margin-top:20px;
+  min-height:260px;
+  background:#1a1a1a;
+  border-radius:12px;
+  padding:20px;
+  cursor:pointer;
 }
-
-#folderArea {
-  margin-top: 20px;
-  padding: 10px;
-  background: #151515;
-  border-radius: 8px;
+.face{
+  display:block;
+}
+.hidden{
+  display:none;
+}
+#front{
+  font-size:32px;
+  text-align:center;
+  padding-top:80px;
+}
+#back{
+  line-height:1.7;
+}
+#ipa{
+  color:#90caf9;
+  font-size:20px;
+}
+#verbForms{
+  color:#ffcc80;
+}
+#example{
+  color:#bdbdbd;
+  font-style:italic;
+}
+.audioButtons{
+  margin-top:15px;
+  display:flex;
+  gap:10px;
+}
+#typingMeaning{
+  background:#1a1a1a;
+  padding:15px;
+  border-radius:10px;
+  min-height:50px;
 }
