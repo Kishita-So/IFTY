@@ -1,80 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ja">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IFTY AI</title>
-<link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>暗記学習ポータル</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="app">
-<h1>IFTY AI</h1>
-<!-- Folder -->
-<div class="section">
-<input
-id="folderName"
-placeholder="Folder Name"
->
-<button id="createFolderBtn">
-Create Folder
-</button>
-<button id="deleteFolderBtn">
-Delete Folder
-</button>
-</div>
-<select id="folderSelect"></select>
-<!-- Word -->
-<div class="section">
-<input
-id="wordInput"
-placeholder="Enter English Word"
->
-<button id="addWordBtn">
-Add Word
-</button>
-</div>
-<!-- Flash Card -->
-<div id="card" class="card">
-<div id="front" class="face">
-NO WORD
-</div>
-<div id="back" class="face hidden">
-<h2 id="meaning"></h2>
-<p id="ipa"></p>
-<p id="verbForms"></p>
-<p id="example"></p>
-<div class="audioButtons">
-<button id="speakUS">
-US
-</button>
-<button id="speakUK">
-UK
-</button>
-</div>
-</div>
-</div>
-<!-- Navigation -->
-<div class="section">
-<button id="prevBtn">
-Prev
-</button>
-<button id="nextBtn">
-Next
-</button>
-</div>
-<!-- Typing -->
-<h2>Typing Test</h2>
-<p id="typingMeaning">
-No Word
-</p>
-<input
-id="typingInput"
-placeholder="Type English"
->
-<button id="checkBtn">
-Check
-</button>
-</div>
-<script src="script.js"></script>
+
+    <header>
+        <h1>📚 暗記学習ポータル</h1>
+    </header>
+
+    <main>
+        <section class="create-deck">
+            <h2>単語帳を作成</h2>
+
+            <input
+                type="text"
+                id="deckName"
+                placeholder="単語帳名を入力">
+
+            <button id="createBtn">
+                作成
+            </button>
+        </section>
+
+        <section class="deck-list">
+            <h2>単語帳一覧</h2>
+
+            <div id="decksContainer"></div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
 </body>
 </html>
