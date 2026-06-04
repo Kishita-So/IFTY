@@ -1,30 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>IFTY AI</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>IFTY AI</title>
+<link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-  <div class="app">
+<div class="app">
 
-    <h1>IFTY AI</h1>
+<h1>IFTY AI</h1>
 
-    <!-- 入力 -->
-    <input id="wordInput" placeholder="Enter word">
-    <button onclick="searchWord()">Search</button>
+<div class="section">
 
-    <!-- 表示 -->
-    <div id="result"></div>
+<input id="folderName" placeholder="Folder name">
+<button id="createFolderBtn">Create</button>
+<button id="deleteFolderBtn">Delete Folder</button>
 
-    <!-- フォルダ -->
-    <div id="folderArea"></div>
+</div>
 
-  </div>
+<select id="folderSelect"></select>
 
-  <script src="app.js"></script>
+<div class="section">
+
+<input id="wordInput" placeholder="Enter word">
+<button id="addWordBtn">Add Word</button>
+
+</div>
+
+<div id="card" class="card">
+
+<div id="front" class="face">
+NO WORD
+</div>
+
+<div id="back" class="face hidden">
+
+<h2 id="meaning"></h2>
+
+<p id="ipa"></p>
+
+<p id="verbForms"></p>
+
+<p id="example"></p>
+
+<button id="speakBtn">
+Pronunciation
+</button>
+
+</div>
+
+</div>
+
+<div class="section">
+
+<button id="prevBtn">Prev</button>
+<button id="nextBtn">Next</button>
+
+</div>
+
+<h3>Typing Test</h3>
+
+<p id="typingMeaning"></p>
+
+<input id="typingInput" placeholder="Type English">
+
+<button id="checkBtn">
+Check
+</button>
+
+</div>
+
+<script src="app.js"></script>
 
 </body>
 </html>
